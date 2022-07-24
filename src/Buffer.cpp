@@ -119,15 +119,15 @@ std::ostream& operator<<(std::ostream& outStream, Buffer const& buffer) noexcept
 std::vector<bool> Buffer::getBools() const noexcept {
     std::vector<bool> data;
 
-    if (m_data[7] != functions::read::coil or m_data[7] != functions::read::input) {
+    if (m_data[7] != functions::read::output and m_data[7] != functions::read::input) {
         return data;
     }
 
     size_t const numOfBytes = m_data[8];
     data.reserve(numOfBytes * 8u);
-    for (size_t byte = 10; byte < numOfBytes + 10; ++byte) {
+    for (size_t byte = 9; byte < numOfBytes + 9; ++byte) {
         auto byteData = m_data[byte];
-        for (size_t i = 0; i < 8u; i++) {
+        for (size_t i = 0; i < 7u; i++) {
             data.push_back(byteData & 0b00000001);
             byteData = byteData >> 1u;
         }
@@ -139,14 +139,14 @@ std::vector<bool> Buffer::getBools() const noexcept {
 std::vector<uint16_t> Buffer::getUInts() const noexcept {
     std::vector<uint16_t> data;
 
-    if (m_data[7] != functions::read::regs or m_data[7] != functions::read::inputRegs) {
+    if (m_data[7] != functions::read::regs and m_data[7] != functions::read::inputRegs) {
         return data;
     }
 
     size_t const numOfBytes = m_data[8];
     data.reserve(numOfBytes / 2u);
 
-    for (size_t byte = 10; byte < numOfBytes + 10; byte += 2) {
+    for (size_t byte = 9; byte < numOfBytes + 11; byte += 2) {
         data.push_back(getRegister(byte));
     }
 

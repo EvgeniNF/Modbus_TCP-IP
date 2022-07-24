@@ -53,3 +53,39 @@ TEST(TEST_MASTER, WRITE_COILS) {
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
 }
+
+TEST(TEST_MASTER, READ_COILS) {
+    modbus::Master modbusMaster("127.0.0.1");
+    std::vector<bool> coils;
+
+    auto result = modbusMaster.readValueInputs(0x01u, coils, 2);
+    std::cout << result.what() << std::endl;
+    ASSERT_TRUE(result);
+}
+
+TEST(TEST_MASTER, READ_OUTPUTS) {
+    modbus::Master modbusMaster("127.0.0.1");
+    std::vector<bool> outputs;
+
+    auto result = modbusMaster.readValueOutputs(0x01u, outputs, 2);
+    std::cout << result.what() << std::endl;
+    ASSERT_TRUE(result);
+}
+
+TEST(TEST_MASTER, READ_REGS) {
+    modbus::Master modbusMaster("127.0.0.1");
+    std::vector<uint16_t> regs;
+
+    auto result = modbusMaster.readValueRegs(0x01u, regs, 2);
+    std::cout << result.what() << std::endl;
+    ASSERT_TRUE(result);
+}
+
+TEST(TEST_MASTER, READ_INPUT_REGS) {
+    modbus::Master modbusMaster("127.0.0.1");
+    std::vector<uint16_t> inputRegs;
+
+    auto result = modbusMaster.readValueInputRegs(0x01u, inputRegs, 2);
+    std::cout << result.what() << std::endl;
+    ASSERT_TRUE(result);
+}

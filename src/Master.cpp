@@ -113,7 +113,7 @@ Result Master::readValueOutputs(uint16_t address, std::vector<bool>& value, size
     if (not result) {
         return result;
     }
-
+    std::cout << response << std::endl;
     value = response.getBools();
     return {true, "Success"};
 }

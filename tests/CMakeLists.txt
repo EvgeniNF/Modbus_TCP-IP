@@ -18,7 +18,8 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 set(SOURCE
         Test.main.cpp
         Test.Buffer.cpp
-        Test.Master.cpp)
+        Test.Master.cpp
+        Test.WriteData.cpp)
 #-------------------------------------------------------------------------------#
 #--------------------------------- Add executable ------------------------------#
 add_executable(${TEST_NAME}
