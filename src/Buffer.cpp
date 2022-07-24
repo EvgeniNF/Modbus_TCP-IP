@@ -4,6 +4,7 @@
 #include "error_codes.hpp"
 #include "functions.hpp"
 #include <bit>
+#include <bitset>
 
 namespace modbus {
 
@@ -116,7 +117,7 @@ std::ostream& operator<<(std::ostream& outStream, Buffer const& buffer) noexcept
     return outStream;
 }
 
-std::vector<bool> Buffer::getBools() const noexcept {
+std::vector<bool> Buffer::getBools(size_t numOfRegisters) const noexcept {
     std::vector<bool> data;
 
     if (m_data[7] != functions::read::output and m_data[7] != functions::read::input) {
@@ -124,12 +125,14 @@ std::vector<bool> Buffer::getBools() const noexcept {
     }
 
     size_t const numOfBytes = m_data[8];
-    data.reserve(numOfBytes * 8u);
+    data.reserve(numOfRegisters);
     for (size_t byte = 9; byte < numOfBytes + 9; ++byte) {
-        auto byteData = m_data[byte];
-        for (size_t i = 0; i < 7u; i++) {
-            data.push_back(byteData & 0b00000001);
-            byteData = byteData >> 1u;
+        std::bitset<8u> bitset{m_data[byte]};
+        for (size_t i = 0; i < bitset.size(); ++i) {
+            data.push_back(bitset[i]);
+            if (data.size() == numOfRegisters) {
+                return data;
+            }
         }
     }
 

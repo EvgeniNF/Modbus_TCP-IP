@@ -25,7 +25,7 @@ Buffer(12) {
 Buffer ReadBuffer::createResponseBuffer() const noexcept {
     if (m_data[7] == functions::read::output ||
         m_data[7] == functions::read::input) {
-        return Buffer(10);
+        return Buffer(9 + (getRegister(10)));
     } else if (m_data[7] == functions::read::regs ||
                m_data[7] == functions::read::inputRegs) {
         return Buffer(9 + (getRegister(10) * 2));

@@ -19,7 +19,7 @@ class Buffer {
     bool hasError(Buffer const& responseBuffer) const noexcept;
     std::string getError() const noexcept;
     virtual Buffer createResponseBuffer() const noexcept { return Buffer(); }
-    std::vector<bool> getBools() const noexcept;
+    std::vector<bool> getBools(size_t numOfRegisters) const noexcept;
     std::vector<uint16_t> getUInts() const noexcept;
 
    public:
