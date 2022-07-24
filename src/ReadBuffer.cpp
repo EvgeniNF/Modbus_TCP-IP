@@ -1,6 +1,12 @@
 #include "ReadBuffer.hpp"
 
+#include "functions.hpp"
+
 namespace modbus {
+
+namespace {
+
+}
 
 ReadBuffer::ReadBuffer(uint16_t address, uint16_t numbersRegisters, uint8_t function, uint8_t deviceId,
                        uint16_t transactionId, uint16_t protocolId) :
@@ -12,12 +18,19 @@ Buffer(12) {
     setDeviceAddress(deviceId);
     setFunctionCode(function);
 
-    setDeviceAddress(address);
+    setAddress(address);
     setNumberOfRegisters(numbersRegisters);
 }
 
 Buffer ReadBuffer::createResponseBuffer() const noexcept {
-    return Buffer(12);
+    if (m_data[7] == functions::read::coil ||
+        m_data[7] == functions::read::input) {
+        return Buffer(10);
+    } else if (m_data[7] == functions::read::regs ||
+               m_data[7] == functions::read::inputRegs) {
+        return Buffer(9 + getRegister(10));
+    }
+    return Buffer(0);
 }
 
 }

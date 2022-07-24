@@ -19,6 +19,7 @@ class Buffer {
     bool hasError(Buffer const& responseBuffer) const noexcept;
     std::string getError() const noexcept;
     virtual Buffer createResponseBuffer() const noexcept { return Buffer(); }
+    std::vector<bool> getBools() const noexcept;
 
    public:
     friend std::ostream& operator<<(std::ostream& outSream, Buffer const& buffer) noexcept;
@@ -35,6 +36,7 @@ class Buffer {
    protected:
     void setValueToBuffer(uint16_t value, size_t id) noexcept;
     void setValueToBuffer(bool value, size_t id) noexcept;
+    uint16_t getRegister(size_t id) const noexcept;
 
    protected:
     Buffer() = default;

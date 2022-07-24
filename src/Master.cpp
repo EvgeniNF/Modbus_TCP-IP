@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "WriteBuffer.hpp"
+#include "ReadBuffer.hpp"
 #include "functions.hpp"
 
 namespace modbus {
@@ -69,8 +70,51 @@ Result Master::write(WriteBuffer const& buffer) noexcept {
     return {true, "Success"};
 }
 
-Result readValue(uint16_t address, bool value) noexcept {
+Result Master::read(ReadBuffer const& requestBuffer, Buffer& responseBuffer) {
+    if (not m_socket.is_open()) {
+        return {false, "Socket was not opened"};
+    }
 
+    boost::system::error_code errorCode;
+    m_socket.write_some(requestBuffer.getConstBuffer(), errorCode);
+    if (errorCode.failed()) {
+        return {false, errorCode.message()};
+    }
+    errorCode.clear();
+
+    m_socket.read_some(responseBuffer.getMutableBuffer(), errorCode);
+    if (errorCode.failed()) {
+        return {false, errorCode.message()};
+    }
+
+    if (responseBuffer.hasError(requestBuffer)) {
+        return {false, responseBuffer.getError()};
+    }
+
+    return {true, "Success"};
+}
+
+Result Master::readValue(uint16_t address, uint16_t value) noexcept {
+    ReadBuffer request(address, 1, functions::read::input, m_deviceId, m_transactionId);
+    Buffer response = request.createResponseBuffer();
+    auto result = read(request, response);
+    if (not result) {
+        return result;
+    }
+
+    value = response.getBools()[0];
+    return {true, "Success"};
+}
+
+Result Master::readValue(uint16_t address, bool value) noexcept {
+    ReadBuffer request(address, 1, functions::read::coil, m_deviceId, m_transactionId);
+    Buffer response = request.createResponseBuffer();
+    auto result = read(request, response);
+    if (not result) {
+        return result;
+    }
+
+    value = response.getBools()[0];
     return {true, "Success"};
 }
 

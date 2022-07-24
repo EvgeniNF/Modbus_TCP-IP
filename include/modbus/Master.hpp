@@ -8,6 +8,8 @@
 namespace modbus {
 
 class WriteBuffer;
+class ReadBuffer;
+class Buffer;
 
 class Master {
    public:
@@ -20,9 +22,11 @@ class Master {
     Result writeValue(std::vector<uint16_t> const& value, uint16_t address) noexcept;
 
     Result readValue(uint16_t address, bool value) noexcept;
+    Result readValue(uint16_t address, uint16_t value) noexcept;
 
    private:
     Result write(WriteBuffer const& buffer) noexcept;
+    Result read(ReadBuffer const& requestBuffer, Buffer& responseBuffer);
 
    private:
     uint16_t m_deviceId;

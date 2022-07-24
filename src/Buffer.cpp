@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include "error_codes.hpp"
+#include "functions.hpp"
+#include <bit>
 
 namespace modbus {
 
@@ -99,6 +101,13 @@ void Buffer::setValueToBuffer(bool value, size_t id) noexcept {
     m_data[id] = value;
 }
 
+uint16_t Buffer::getRegister(size_t id) const noexcept {
+    uint16_t reg = m_data[id];
+    reg = reg << 8u;
+    reg = reg | m_data[id + 1];
+    return reg;
+}
+
 std::ostream& operator<<(std::ostream& outStream, Buffer const& buffer) noexcept {
     for (size_t i = 0; i < buffer.m_size; ++i) {
         outStream << "0x" << std::hex << (uint16_t) buffer.m_data[i] << " ";
@@ -107,5 +116,24 @@ std::ostream& operator<<(std::ostream& outStream, Buffer const& buffer) noexcept
     return outStream;
 }
 
+std::vector<bool> Buffer::getBools() const noexcept {
+    std::vector<bool> data;
+
+    if (m_data[7] != functions::read::coil or m_data[7] != functions::read::input) {
+        return data;
+    }
+
+    size_t const numOfBytes = m_data[8];
+    data.reserve(numOfBytes * 8u);
+    for (size_t byte = 10; byte < numOfBytes + 10; ++byte) {
+        auto byteData = m_data[byte];
+        for (size_t i = 0; i < 8u; i++) {
+            data.push_back(byteData & 0b00000001);
+            byteData = byteData >> 1u;
+        }
+    }
+
+    return data;
 }
 
+}
