@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Buffer.hpp"
+#include "WriteBuffer.hpp"
 
 inline uint8_t highByte(uint16_t value) noexcept {
     return *(reinterpret_cast<uint8_t*>(&value) + 1u);
@@ -15,7 +15,7 @@ TEST(TEST_BUFFER, COIL_BUFFER) {
     uint8_t address = 0x01u;
     uint16_t messageId = 0x01u;
 
-    modbus::Buffer bufferTrue(value, 0x05u, slaveId, address, messageId);
+    modbus::WriteBuffer bufferTrue(value, 0x05u, slaveId, address, messageId);
     std::cout << bufferTrue << std::endl;
 
     auto data = reinterpret_cast<uint8_t const*>(bufferTrue.getMutableBuffer().data());
@@ -36,7 +36,7 @@ TEST(TEST_BUFFER, COIL_BUFFER) {
     ASSERT_TRUE(data[11] == 0x00u);
 
     value = false;
-    modbus::Buffer bufferFalse(value, 0x05u, slaveId, address, messageId);
+    modbus::WriteBuffer bufferFalse(value, 0x05u, slaveId, address, messageId);
     std::cout << bufferFalse << std::endl;
 
     data = reinterpret_cast<uint8_t const*>(bufferFalse.getConstBuffer().data());
@@ -63,7 +63,7 @@ TEST(TEST_BUFFER, REG_BUFFER) {
     uint8_t address = 0x01u;
     uint16_t messageId = 0x01u;
 
-    modbus::Buffer buffer(value, 0x05u, slaveId, address, messageId);
+    modbus::WriteBuffer buffer(value, 0x05u, slaveId, address, messageId);
     std::cout << buffer << std::endl;
 }
 
@@ -73,7 +73,7 @@ TEST(TEST_BUFFER, COILS_BUFFER) {
     uint8_t address = 0x01u;
     uint16_t messageId = 0x01u;
 
-    modbus::Buffer buffer(value, 0xFu, slaveId, address, messageId);
+    modbus::WriteBuffer buffer(value, 0xFu, slaveId, address, messageId);
     std::cout << buffer << std::endl;
 }
 
@@ -83,6 +83,6 @@ TEST(TEST_BUFFER, REGS_BUFFER) {
     uint8_t address = 0x01u;
     uint16_t messageId = 0x01u;
 
-    modbus::Buffer buffer(value, 0x10u, slaveId, address, messageId);
+    modbus::WriteBuffer buffer(value, 0x10u, slaveId, address, messageId);
     std::cout << buffer << std::endl;
 }

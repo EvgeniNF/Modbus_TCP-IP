@@ -22,12 +22,17 @@ set(HEADERS
         ${LIB_PATH}/functions.hpp
         ${LIB_PATH}/Connection.hpp
         ${LIB_PATH}/modbus/Master.hpp
-        ${LIB_PATH}/error_codes.hpp)
+        ${LIB_PATH}/error_codes.hpp
+        ${LIB_PATH}/modbus/Result.hpp
+        ${LIB_PATH}/ReadBuffer.hpp
+        ${LIB_PATH}/WriteBuffer.hpp)
 #-------------------------------------------------------------------------------#
 #-------------------------------- Set SOURCE files -----------------------------#
 set(SOURCES
         Master.cpp
-        Buffer.cpp)
+        Buffer.cpp
+        ReadBuffer.cpp
+        WriteBuffer.cpp)
 #-------------------------------------------------------------------------------#
 #---------------------------------- Add library --------------------------------#
 add_library(${LIB_NAME} SHARED

@@ -8,9 +8,9 @@ namespace functions {
 
     namespace write {
         static constexpr uint8_t coil  = 0x05u;
-        static constexpr uint8_t coils = 0x15u;
+        static constexpr uint8_t coils = 0xFu;
         static constexpr uint8_t reg   = 0x06u;
-        static constexpr uint8_t regs  = 0x16u;
+        static constexpr uint8_t regs  = 0x10u;
     }
 
     namespace read {
