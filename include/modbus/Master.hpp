@@ -21,8 +21,10 @@ class Master {
     Result writeValue(std::vector<bool> const& value, uint16_t address) noexcept;
     Result writeValue(std::vector<uint16_t> const& value, uint16_t address) noexcept;
 
-    Result readValue(uint16_t address, bool value) noexcept;
-    Result readValue(uint16_t address, uint16_t value) noexcept;
+    Result readValueInputs(uint16_t address, std::vector<bool>& value, size_t num) noexcept;
+    Result readValueOutputs(uint16_t address, std::vector<bool>& value, size_t num) noexcept;
+    Result readValueRegs(uint16_t address, std::vector<uint16_t>& value, size_t num) noexcept;
+    Result readValueInputRegs(uint16_t address, std::vector<uint16_t>& value, size_t num) noexcept;
 
    private:
     Result write(WriteBuffer const& buffer) noexcept;

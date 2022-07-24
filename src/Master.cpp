@@ -94,27 +94,51 @@ Result Master::read(ReadBuffer const& requestBuffer, Buffer& responseBuffer) {
     return {true, "Success"};
 }
 
-Result Master::readValue(uint16_t address, uint16_t value) noexcept {
-    ReadBuffer request(address, 1, functions::read::input, m_deviceId, m_transactionId);
+Result Master::readValueInputs(uint16_t address, std::vector<bool>& value, size_t num) noexcept {
+    ReadBuffer request(address, num, functions::read::input, m_deviceId, m_transactionId);
     Buffer response = request.createResponseBuffer();
     auto result = read(request, response);
     if (not result) {
         return result;
     }
 
-    value = response.getBools()[0];
+    value = response.getBools();
     return {true, "Success"};
 }
 
-Result Master::readValue(uint16_t address, bool value) noexcept {
-    ReadBuffer request(address, 1, functions::read::coil, m_deviceId, m_transactionId);
+Result Master::readValueOutputs(uint16_t address, std::vector<bool>& value, size_t num) noexcept {
+    ReadBuffer request(address, num, functions::read::output, m_deviceId, m_transactionId);
     Buffer response = request.createResponseBuffer();
     auto result = read(request, response);
     if (not result) {
         return result;
     }
 
-    value = response.getBools()[0];
+    value = response.getBools();
+    return {true, "Success"};
+}
+
+Result Master::readValueRegs(uint16_t address, std::vector<uint16_t>& value, size_t num) noexcept {
+    ReadBuffer request(address, num, functions::read::regs, m_deviceId, m_transactionId);
+    Buffer response = request.createResponseBuffer();
+    auto result = read(request, response);
+    if (not result) {
+        return result;
+    }
+
+    value = response.getUInts();
+    return {true, "Success"};
+}
+
+Result Master::readValueInputRegs(uint16_t address, std::vector<uint16_t>& value, size_t num) noexcept {
+    ReadBuffer request(address, num, functions::read::inputRegs, m_deviceId, m_transactionId);
+    Buffer response = request.createResponseBuffer();
+    auto result = read(request, response);
+    if (not result) {
+        return result;
+    }
+
+    value = response.getUInts();
     return {true, "Success"};
 }
 

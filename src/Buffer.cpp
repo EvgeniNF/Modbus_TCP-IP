@@ -136,4 +136,21 @@ std::vector<bool> Buffer::getBools() const noexcept {
     return data;
 }
 
+std::vector<uint16_t> Buffer::getUInts() const noexcept {
+    std::vector<uint16_t> data;
+
+    if (m_data[7] != functions::read::regs or m_data[7] != functions::read::inputRegs) {
+        return data;
+    }
+
+    size_t const numOfBytes = m_data[8];
+    data.reserve(numOfBytes / 2u);
+
+    for (size_t byte = 10; byte < numOfBytes + 10; byte += 2) {
+        data.push_back(getRegister(byte));
+    }
+
+    return data;
+}
+
 }

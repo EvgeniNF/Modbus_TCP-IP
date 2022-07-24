@@ -20,6 +20,7 @@ class Buffer {
     std::string getError() const noexcept;
     virtual Buffer createResponseBuffer() const noexcept { return Buffer(); }
     std::vector<bool> getBools() const noexcept;
+    std::vector<uint16_t> getUInts() const noexcept;
 
    public:
     friend std::ostream& operator<<(std::ostream& outSream, Buffer const& buffer) noexcept;

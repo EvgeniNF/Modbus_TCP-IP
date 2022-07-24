@@ -14,7 +14,7 @@ namespace functions {
     }
 
     namespace read {
-        static constexpr uint8_t coil      = 0x01u;
+        static constexpr uint8_t output    = 0x01u;
         static constexpr uint8_t input     = 0x02u;
         static constexpr uint8_t regs      = 0x03u;
         static constexpr uint8_t inputRegs = 0x04u;
