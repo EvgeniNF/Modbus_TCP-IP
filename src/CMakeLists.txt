@@ -32,7 +32,8 @@ set(SOURCES
         Master.cpp
         Buffer.cpp
         ReadBuffer.cpp
-        WriteBuffer.cpp)
+        WriteBuffer.cpp
+        Connection.cpp)
 #-------------------------------------------------------------------------------#
 #---------------------------------- Add library --------------------------------#
 add_library(${LIB_NAME} SHARED

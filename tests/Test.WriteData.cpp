@@ -4,14 +4,14 @@
 TEST(TEST_WRITE_DATA, REGISTER) {
     modbus::Master master("127.0.0.1");
     uint16_t value = 0x2544;
-    auto result = master.writeValue(value, 0x50);
+    auto result = master.writeRegister(value, 0x50);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
 
     std::vector<uint16_t> readData;
     size_t const readDataSize = 1;
-    result = master.readValueRegs(0x50, readData, readDataSize);
+    result = master.readHoldingRegisters(0x50, readDataSize, readData);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
@@ -26,14 +26,14 @@ TEST(TEST_WRITE_DATA, REGISTER) {
 TEST(TEST_WRITE_DATA, REGISTERS) {
     modbus::Master master("127.0.0.1");
     std::vector<uint16_t> value = {0x2544, 0x0012, 0x3378, 0x8753};
-    auto result = master.writeValue(value, 0x50);
+    auto result = master.writeRegisters(value, 0x50);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
 
     std::vector<uint16_t> readData;
     size_t const readDataSize = 4;
-    result = master.readValueRegs(0x50, readData, readDataSize);
+    result = master.readHoldingRegisters(0x50, readDataSize, readData);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
@@ -49,14 +49,14 @@ TEST(TEST_WRITE_DATA, REGISTERS) {
 TEST(TEST_WRITE_DATA, COIL) {
     modbus::Master master("127.0.0.1");
     bool value = true;
-    auto result = master.writeValue(value, 0x50);
+    auto result = master.writeCoil(value, 0x50);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
 
     std::vector<bool> readData;
     size_t const readDataSize = 1;
-    result = master.readValueOutputs(0x50, readData, readDataSize);
+    result = master.readCoils(0x50, readDataSize, readData);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
@@ -69,14 +69,14 @@ TEST(TEST_WRITE_DATA, COIL) {
 TEST(TEST_WRITE_DATA, COILS) {
     modbus::Master master("127.0.0.1");
     std::vector<bool> value = {true, false, true, true, false, false, true};
-    auto result = master.writeValue(value, 0x50);
+    auto result = master.writeCoils(value, 0x50);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
 
     std::vector<bool> readData;
     size_t const readDataSize = value.size();
-    result = master.readValueOutputs(0x50, readData, readDataSize);
+    result = master.readCoils(0x50, readDataSize, readData);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
@@ -95,14 +95,14 @@ TEST(TEST_WRITE_DATA, COILS) {
 TEST(TEST_WRITE_DATA, INPUTS) {
     modbus::Master master("127.0.0.1");
     std::vector<bool> value = {false, true, true, true, false, false, true, true, false, false, true};
-    auto result = master.writeValue(value, 0x50);
+    auto result = master.writeCoils(value, 0x50);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);
 
     std::vector<bool> readData;
     size_t const readDataSize = value.size();
-    result = master.readValueInputs(0x50, readData, readDataSize);
+    result = master.readInputs(0x50, readDataSize, readData);
 
     std::cout << result.what() << std::endl;
     ASSERT_TRUE(result);

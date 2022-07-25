@@ -18,6 +18,10 @@ class ReadBuffer : public Buffer {
 
    public:
     Buffer createResponseBuffer() const noexcept final;
+
+   private:
+    static constexpr size_t numOfStandardRegisters {9};
+    static constexpr size_t numOfReadBufferRegisters {numOfStandardRegisters + 3};
 };
 
 

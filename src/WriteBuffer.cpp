@@ -3,8 +3,10 @@
 namespace modbus {
 
 WriteBuffer::WriteBuffer(reg value, uint8_t functionCode,
-                         uint8_t deviceId, uint16_t address, uint16_t transactionId,
-                         uint16_t protocolId) : Buffer(12u) {
+                         uint8_t deviceId, uint16_t address,
+                         uint16_t transactionId, uint16_t protocolId) :
+    Buffer(numOfStandardRegisters) {
+
     constexpr uint16_t messageLength = 0x06u;
     constexpr size_t startValueId = 10u;
 
@@ -18,15 +20,14 @@ WriteBuffer::WriteBuffer(reg value, uint8_t functionCode,
     setValueToBuffer(value, startValueId);
 }
 
-WriteBuffer::WriteBuffer(coil value, uint8_t functionCode,
-               uint8_t deviceId, uint16_t address, uint16_t transactionId,
-               uint16_t protocolId) :
-    WriteBuffer(static_cast<reg>(value ? 0xFF00u : 0x00u), functionCode, deviceId,
-           address, transactionId, protocolId) {}
+WriteBuffer::WriteBuffer(coil value, uint8_t functionCode, uint8_t deviceId, uint16_t address, uint16_t transactionId, uint16_t protocolId) :
+    WriteBuffer(static_cast<reg>(value ? 0xFF00u : 0x00u),
+                functionCode, deviceId, address,
+                transactionId, protocolId) {}
 
-
-WriteBuffer::WriteBuffer(coils const& value, uint8_t functionCode, uint8_t deviceId,
-                         uint16_t address, uint16_t transactionId, uint16_t protocolId) :
+WriteBuffer::WriteBuffer(coils const& value, uint8_t functionCode,
+                         uint8_t deviceId, uint16_t address,
+                         uint16_t transactionId, uint16_t protocolId) :
     Buffer(14 + (value.size() - 1) / 8) {
 
     setTransactionId(transactionId);
@@ -43,8 +44,9 @@ WriteBuffer::WriteBuffer(coils const& value, uint8_t functionCode, uint8_t devic
     }
 }
 
-WriteBuffer::WriteBuffer(regs const& value, uint8_t functionCode, uint8_t deviceId,
-                         uint16_t address, uint16_t transactionId, uint16_t protocolId) :
+WriteBuffer::WriteBuffer(regs const& value, uint8_t functionCode,
+                         uint8_t deviceId, uint16_t address,
+                         uint16_t transactionId, uint16_t protocolId) :
     Buffer(12 + 1 + value.size() * 2) {
 
     setTransactionId(transactionId);
@@ -59,12 +61,10 @@ WriteBuffer::WriteBuffer(regs const& value, uint8_t functionCode, uint8_t device
     size_t sizeInBytes = value.size() * 2;
     size_t startAddress = 12 + 1;
     for (size_t i = startAddress; i < sizeInBytes + startAddress; i += 2) {
-        setValueToBuffer(value[(i - startAddress) / 2 ], i);
+        setValueToBuffer(value[(i - startAddress) / 2], i);
     }
 }
 
-Buffer WriteBuffer::createResponseBuffer() const noexcept {
-    return Buffer(12);
-}
+Buffer WriteBuffer::createResponseBuffer() const noexcept { return Buffer(numOfStandardRegisters); }
 
-}
+}// namespace modbus

@@ -23,7 +23,7 @@ class Buffer {
     std::vector<uint16_t> getUInts() const noexcept;
 
    public:
-    friend std::ostream& operator<<(std::ostream& outSream, Buffer const& buffer) noexcept;
+    friend std::ostream& operator<<(std::ostream& outStream, Buffer const& buffer) noexcept;
 
    protected:
     void setTransactionId(uint16_t id) noexcept;
@@ -39,7 +39,7 @@ class Buffer {
     void setValueToBuffer(bool value, size_t id) noexcept;
     uint16_t getRegister(size_t id) const noexcept;
 
-   protected:
+   private:
     Buffer() = default;
 
    protected:
